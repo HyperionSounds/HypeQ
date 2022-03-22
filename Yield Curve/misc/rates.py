@@ -34,6 +34,70 @@ recent_rates = rates_df.tail
 
 rates = recent_rates
 print(rates_df)
+rates_df.info()
+
+
+
+
+#if you have adjusted close data 
+
+# Get the data for the SPY (an ETF on the S&P 500 index) and the stock Apple by specifying the stock ticker, start Date, and end Date
+#mkt_data = yf.download(['SPY', 'AAPL'],'2020-01-01','2022-03-18')
+
+"""
+mkt_data = yf.download('SPY','2020-01-01','2022-03-18')
+
+# Plot the adjusted close prices
+mkt_data["Adj Close"].plot()
+plt.show()
+
+print(mkt_data.tail)
+
+mkt_data.rename(columns={
+        'Open': 'open',
+        'High': 'high',
+        'Low': 'low',
+        'Close': 'close',
+        'Volume': 'volume',
+    }, inplace=True, copy=False)
+
+mkt_data.index.names = ['Date']
+mkt_data.index = mkt_data.index.map(lambda t: t.strftime('%Y-%m-%d'))
+
+"""
+
+ticker = 'SPY'
+yfticker= yf.Ticker(ticker)
+
+mkt_data = yfticker.history(start="2020-01-01", interval="1D")
+mkt_data = mkt_data.assign(symbol=ticker)
+#ticker_data['symbol'] = ticker_data['symbol'].str.replace(r'', '')
+
+
+#mkt_data.index.names = ['Date']
+#mkt_data.index = mkt_data.index.map(lambda t: t.strftime('%Y-%m-%d'))
+
+
+#mkt_data['Date'] = mkt_data.index
+mkt_data.reset_index()
+
+print(mkt_data)
+mkt_data.info()
+
+
+
+# this stuff below is supposed to merge the mkt data and the rates so we can compare. It doesnt work yet
+rates_df.set_index(pd.to_datetime(rates_df['Date']), inplace=True)
+
+# join both datasets together (if you were to have timeseries of stock / mkt index data)
+together = pd.merge(mkt_data[['Date', 'Close']],
+                    rates_df[['Date', '3Y', '5Y']],
+                    on= ['Date'], how='left')
+
+
+
+# Now plot stuff
+
 
 fig = plt.figure(figsize=(16, 8))
 plt.plot(rates_df['Date'],rates_df['10Y'])
@@ -53,28 +117,6 @@ plt.axhline(0)
 plt.show()
 
 
-#if you have adjusted close data 
-
-# Get the data for the SPY (an ETF on the S&P 500 index) and the stock Apple by specifying the stock ticker, start Date, and end Date
-#mkt_data = yf.download(['SPY', 'AAPL'],'2020-01-01','2022-03-18')
-mkt_data = yf.download('SPY','2020-01-01','2022-03-18')
-
-# Plot the adjusted close prices
-mkt_data["Adj Close"].plot()
-plt.show()
-
-print(mkt_data.tail)
-
-
-"""
-# this stuff below is supposed to merge the mkt data and the rates so we can compare. It doesnt work yet
-mkt_data.set_index(pd.to_datetime(mkt_data['Date']), inplace=True)
-rates_df.set_index(pd.to_datetime(rates_df['Date']), inplace=True)
-
-# join both datasets together (if you were to have timeseries of stock / mkt index data)
-together = pd.merge(mkt_data[['Date', 'Adj Close']],
-                    rates_df[['Date', '3Y', '5Y']],
-                    on= ['Date'], how='left')
 
 # Get second axis
 ax2 = ax.twinx()
@@ -133,18 +175,3 @@ plt.plot(tmp['Date'],
 plt.legend()
 plt.title('Rates Diff VS S&P 500')
 ax2.tick_params('vals', colors='b')
-"""
-"""
-
-#formatter 
-"""
-#formatter in the works
-fig, ax = plt.subplots()
-ax.plot(rates_df['date'],rates_df['10Y'])
-
-myFmt = DateFormatter("%y")
-ax.xaxis.set_major_formatter(myFmt)
-
-plt.grid()
-plt.show()
-"""
