@@ -39,7 +39,7 @@ rates_df.info()
 mkt_data = yf.download('SPY','2020-01-01','2022-03-18')
 
 # Plot the adjusted close prices
-mkt_data["Adj Close"].plot()
+mkt_data["Close"].plot()
 plt.show()
 
 print(mkt_data.tail)
@@ -72,14 +72,25 @@ close_data.info()
 # this stuff below is supposed to merge the mkt data and the rates so we can compare. It doesnt work yet
 #rates_df.set_index(pd.to_datetime(rates_df['Date']), inplace=True)
 
+"""
 # join both datasets together (if you were to have timeseries of stock / mkt index data)
-together = pd.merge(mkt_data[['Date', 'Close']],
-                    rates_df[['Date', '3Y', '5Y']],
-                    on= ['Date'], how='left')
+together = pd.merge(mkt_data['Date', 'Close'],
+                    rates_df['Date', '3Y', '5Y'],
+                    on='Date', how='left')
+"""
+
+#together = pd.concat(mkt_data, rates_df, on="Date")
 
 
+together = rates_df.join(mkt_data)
+print(together)
+
+together['Date'] = together.index
+together.info
 
 # Now plot stuff
+
+rates_df['Date'] = together.index
 
 
 fig = plt.figure(figsize=(16, 8))
@@ -92,7 +103,7 @@ plt.suptitle('rates_df')
 # join both datasets together
 fig, ax = plt.subplots(figsize=(16, 8))
 
-plt.plot(rates_df['Date'], rates_df['10Y'] - rates_df['2Y'] , color='r', label='Long minus Short Rates')
+plt.plot(rates_df['Date'], rates_df['10Y'] - rates_df['2Y'] , color='r', label='Long minus Short Rates (10Y-2Y)')
 
 plt.legend()
 plt.grid()
@@ -104,7 +115,7 @@ plt.show()
 # Get second axis
 ax2 = ax.twinx()
 plt.plot(together['Date'],
-         together['Adj Close']
+         together['Close']
          , 'c', label='S&P 500')
 plt.legend()
 plt.title('Rates VS S&P 500')
@@ -121,16 +132,16 @@ together.tail(20)
 
 
 # get percent change for all interested values
-together['3YR_PCT'] = together['3 YR'].pct_change()
-together['5YR_PCT'] = together['5 YR'].pct_change()
-together['SP500_PCT'] = together['Adj Close'].pct_change()
+together['3YR_PCT'] = together['3Y'].pct_change()
+together['5YR_PCT'] = together['5Y'].pct_change()
+together['SP500_PCT'] = together['Close'].pct_change()
 together.head()
 
 tmp = together.copy()
 cut_off_date = '1990-01-01'
 tmp = tmp[tmp['Date'] > cut_off_date]
 
-tmp['diff'] = tmp['5 YR'] - tmp['3 YR']
+tmp['diff'] = tmp['5Y'] - tmp['3Y']
 
 # join both datasets together
 fig, ax = plt.subplots(figsize=(16, 8))
@@ -153,7 +164,7 @@ ax.pcolorfast(ax.get_xlim(), ax.get_ylim(),
 # Get second axis
 ax2 = ax.twinx()
 plt.plot(tmp['Date'],
-         tmp['Adj Close'].rolling(window=5).mean().values
+         tmp['Close'].rolling(window=5).mean().values
          , 'c--', label='S&P 500 PCT')
 plt.legend()
 plt.title('Rates Diff VS S&P 500')
