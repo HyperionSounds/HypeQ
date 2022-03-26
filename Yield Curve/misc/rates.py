@@ -17,25 +17,17 @@ import yfinance as yf
 # load data you donwloaded from Yahoo Finance
 #gspc_df = pd.read_csv('^GSPC.csv') #SP500
 #gspc_df['Date'] = pd.to_datetime(gspc_df['Date'])
-
-
-# gotta go download data here: https://data.nasdaq.com/data/USTREASURY/YIELD-treasury-yield-curve-rates
-# the data is kind of shitty
-rates_df = pd.read_csv('USTREASURY-YIELD.csv')
-rates_df['Date'] = pd.to_datetime(rates_df['Date'])
-print(rates_df.head())
 """
 
 # download rates.csv from ust folder package.
 rates_df = pd.read_csv('rates.csv')
 rates_df.columns = ['Date', '1M', '3M', '6M', '1Y', '2Y', '3Y', '5Y', '7Y', '10Y', '20Y', '30Y', '30Y Display']
+#rates_df['Date'] = pd.to_datetime(rates_df['Date'])
 
-recent_rates = rates_df.tail
+rates_df = rates_df.set_index('Date', inplace=False)
 
-rates = recent_rates
 print(rates_df)
 rates_df.info()
-
 
 
 
@@ -43,7 +35,6 @@ rates_df.info()
 
 # Get the data for the SPY (an ETF on the S&P 500 index) and the stock Apple by specifying the stock ticker, start Date, and end Date
 #mkt_data = yf.download(['SPY', 'AAPL'],'2020-01-01','2022-03-18')
-
 """
 mkt_data = yf.download('SPY','2020-01-01','2022-03-18')
 
@@ -63,7 +54,6 @@ mkt_data.rename(columns={
 
 mkt_data.index.names = ['Date']
 mkt_data.index = mkt_data.index.map(lambda t: t.strftime('%Y-%m-%d'))
-
 """
 
 ticker = 'SPY'
@@ -71,23 +61,16 @@ yfticker= yf.Ticker(ticker)
 
 mkt_data = yfticker.history(start="2020-01-01", interval="1D")
 mkt_data = mkt_data.assign(symbol=ticker)
-#ticker_data['symbol'] = ticker_data['symbol'].str.replace(r'', '')
 
+close_data = mkt_data[['Close']]
+close_data.reset_index(drop=True)
 
-#mkt_data.index.names = ['Date']
-#mkt_data.index = mkt_data.index.map(lambda t: t.strftime('%Y-%m-%d'))
-
-
-#mkt_data['Date'] = mkt_data.index
-mkt_data.reset_index()
-
-print(mkt_data)
-mkt_data.info()
-
+print(close_data)
+close_data.info()
 
 
 # this stuff below is supposed to merge the mkt data and the rates so we can compare. It doesnt work yet
-rates_df.set_index(pd.to_datetime(rates_df['Date']), inplace=True)
+#rates_df.set_index(pd.to_datetime(rates_df['Date']), inplace=True)
 
 # join both datasets together (if you were to have timeseries of stock / mkt index data)
 together = pd.merge(mkt_data[['Date', 'Close']],
