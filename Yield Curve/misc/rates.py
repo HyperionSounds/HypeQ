@@ -59,7 +59,7 @@ mkt_data.index = mkt_data.index.map(lambda t: t.strftime('%Y-%m-%d'))
 ticker = 'SPY'
 yfticker= yf.Ticker(ticker)
 
-mkt_data = yfticker.history(start="2020-01-01", interval="1D")
+mkt_data = yfticker.history(start="2004-01-01", interval="1D")
 mkt_data = mkt_data.assign(symbol=ticker)
 
 close_data = mkt_data[['Close']]
@@ -69,35 +69,26 @@ print(close_data)
 close_data.info()
 
 
-# this stuff below is supposed to merge the mkt data and the rates so we can compare. It doesnt work yet
-#rates_df.set_index(pd.to_datetime(rates_df['Date']), inplace=True)
-
-"""
-# join both datasets together (if you were to have timeseries of stock / mkt index data)
-together = pd.merge(mkt_data['Date', 'Close'],
-                    rates_df['Date', '3Y', '5Y'],
-                    on='Date', how='left')
-"""
-
-#together = pd.concat(mkt_data, rates_df, on="Date")
-
-
+# merge bond yield rates with market data
 together = rates_df.join(mkt_data)
 print(together)
 
 together['Date'] = together.index
 together.info
 
-# Now plot stuff
-
 rates_df['Date'] = together.index
 
+# Now plot stuff
 
+# Plots interest rates of 10Y, 5Y, 2Y bonds on same graph (shows curve flattening)
 fig = plt.figure(figsize=(16, 8))
 plt.plot(rates_df['Date'],rates_df['10Y'])
 plt.plot(rates_df['Date'],rates_df['5Y'])
 plt.plot(rates_df['Date'],rates_df['2Y'])
-plt.suptitle('rates_df')
+plt.suptitle('Interest Rates 10Y / 5Y / 2Y')
+plt.grid()
+
+
 
 # Now going to compare long vs short rates and the delta (risk)
 # join both datasets together
@@ -108,9 +99,6 @@ plt.plot(rates_df['Date'], rates_df['10Y'] - rates_df['2Y'] , color='r', label='
 plt.legend()
 plt.grid()
 plt.axhline(0)
-plt.show()
-
-
 
 # Get second axis
 ax2 = ax.twinx()
@@ -119,7 +107,8 @@ plt.plot(together['Date'],
          , 'c', label='S&P 500')
 plt.legend()
 plt.title('Rates VS S&P 500')
-ax2.tick_params('vals', colors='b')
+ax2.tick_params('both', colors='b')
+plt.grid()
 
 
 # last valid observation forward
@@ -131,6 +120,8 @@ together = together.dropna(axis=0)
 together.tail(20)
 
 
+
+# calculate delta between long and short rates
 # get percent change for all interested values
 together['3YR_PCT'] = together['3Y'].pct_change()
 together['5YR_PCT'] = together['5Y'].pct_change()
@@ -143,6 +134,8 @@ tmp = tmp[tmp['Date'] > cut_off_date]
 
 tmp['diff'] = tmp['5Y'] - tmp['3Y']
 
+
+# plotting mkt close and rates delta together
 # join both datasets together
 fig, ax = plt.subplots(figsize=(16, 8))
 
@@ -152,7 +145,7 @@ plt.plot(tmp['Date'], tmp['diff'].rolling(window=5).mean().values,
 plt.legend()
 plt.grid()
 plt.axhline(0)
-ax.tick_params('vals', colors='r')
+ax.tick_params('both', colors='r')
 
 # background bar color
 tmp['diff_simple'] = tmp['diff'].rolling(window=5).mean().values
@@ -168,4 +161,6 @@ plt.plot(tmp['Date'],
          , 'c--', label='S&P 500 PCT')
 plt.legend()
 plt.title('Rates Diff VS S&P 500')
-ax2.tick_params('vals', colors='b')
+ax2.tick_params('both', colors='b')
+plt.grid()
+plt.show()

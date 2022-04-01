@@ -12,7 +12,7 @@ for year in available_years():
 save_xml(2022, folder="./xml", overwrite=True)
 
 # read UST yield rates as pandas dataframe
-df = read_rates(start_year=2020, end_year=2022, folder="./xml")
+df = read_rates(start_year=2004, end_year=2022, folder="./xml")
 
 # save as single CSV file
 df.to_csv("rates.csv")
