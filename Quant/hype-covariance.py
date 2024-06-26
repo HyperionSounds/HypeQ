@@ -1,5 +1,6 @@
 import yfinance as yf
 import pandas as pd
+import numpy as np
 
 start = '20150101'
 end = '20200101'

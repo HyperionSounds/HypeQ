@@ -1,21 +1,21 @@
-# data importer
 import pandas as pd
 import yfinance as yf
-
 import numpy as np
 from matplotlib import pyplot as plt
 
+
+start_date = '2020-01-01'
+
+# Ticker data import
 #Example for importing multiple tickers
 #full_data = yf.download("SPY ^VIX", start="2004-01-01")
 #print(full_data)
 
-# Ticker data import
-ticker = '^GSPC'
+ticker = '^SPX'
 yfticker= yf.Ticker(ticker)
 
-mkt_data = yfticker.history(start="2020-01-01", interval="1D")
+mkt_data = yfticker.history(start=start_date, interval="1D")
 mkt_data = mkt_data.assign(symbol=ticker)
-
 
 #Historical Volatility calculation
 TRADING_DAYS = 30
@@ -27,23 +27,27 @@ volatility.tail()
 #VIX stuff and volatility
 vticker = '^VIX'
 vfticker= yf.Ticker(vticker)
-imp_vol = vfticker.history(start="2004-01-01", interval="1D")
+
+imp_vol = vfticker.history(start=start_date, interval="1D")
 imp_vol = imp_vol.assign(symbol=vticker)
+
+print('implied vol: ', imp_vol['Open'])
+
 mkt_data['Returns']=returns
 mkt_data['Volatility']=volatility
-mkt_data['ImpliedVol']=imp_vol['Close']
+mkt_data['ImpliedVol']=imp_vol['Open'].values
 
+print('Market Data: ', mkt_data)
 
 mkt_data['VRP'] = mkt_data['ImpliedVol'].rank(pct = True) - mkt_data['Volatility'].rank(pct = True)
 
-print(mkt_data['VRP'].tail(15))
+print('VRP: ', mkt_data['VRP'].tail(15))
 
 #mkt_data.plot.scatter(x="Volatility", y="ImpliedVol", alpha=0.5)
 print(mkt_data)
 
 covariance = np.cov(mkt_data['ImpliedVol'],mkt_data['Close'], bias=True)[0][1]
 print(covariance)
-
 
 # Plotting stuff
 plt.figure(figsize=(12,5))
