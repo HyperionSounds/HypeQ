@@ -4,8 +4,8 @@ import pandas as pd
 import yfinance as yf  
 
 # Define the start and end dates
-START = '2018-01-01'
-END = '2024-06-10'
+START = '2014-01-01'
+END = '2024-11-28'
 
 # Define the tickers
 tickers = ['SPY'] 

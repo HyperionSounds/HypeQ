@@ -13,7 +13,7 @@ atrLength = 20
 RangeDays = 24
 
 #where you want to use as center for density function
-mkt_open = 5522
+mkt_open = 5159.5
 
 def get_next_trading_days(mkt_data, selected_rows):
     # Create a function to find the next trading day (excluding weekends)
@@ -40,7 +40,7 @@ def get_next_trading_days(mkt_data, selected_rows):
 if __name__ == "__main__":  
 
     START = '2022-01-01'
-    END = '2024-06-27'
+    END = '2024-08-05'
     #END = dt.datetime.now()
 
     tickers = ['ES=F'] 

@@ -13,7 +13,7 @@ atrLength = 10
 RangeDays = 10
 
 #where you want to use as center for density function
-mkt_open = 5522
+mkt_open = 5480
 
 def get_next_trading_days(mkt_data, selected_rows):
     # Create a function to find the next trading day (excluding weekends)

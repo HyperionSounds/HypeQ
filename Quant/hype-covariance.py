@@ -19,11 +19,9 @@ def daily_returns(prices):
     res = (prices/prices.shift(1) - 1.0)[1:]
     return res
 
-
 def cumulative_returns(returns):
     res = (returns + 1.0).cumprod()
     return res
-
 
 cum_returns = cumulative_returns(daily_returns(prices))
 
