@@ -45,13 +45,13 @@ if __name__ == "__main__":
     END = dt.datetime.now()
 
     tickers = ['ES=F'] 
-    adj_close_list = []
+    close_list = []
     for ticker in tickers:
         ticker_module = yf.Ticker(ticker)
         data = yf.download(ticker, start=START, end=END)
-        adj_close = data['Adj Close']
-        adj_close.rename(f'{ticker} Adj Close', inplace=True)
-        adj_close_list.append(adj_close)
+        close = data['Close']
+
+        close_list.append(close)
 
     mkt_data = data
     print('mkt_data: ', mkt_data)
