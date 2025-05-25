@@ -1,49 +1,28 @@
 from lppls import lppls, data_loader
 import numpy as np
+import matplotlib.pyplot as plt
 import pandas as pd
 from datetime import datetime as dt
-from datetime import datetime
 import yfinance as yf
-
 #%matplotlib inline
 
+START = '2020-01-1'
+END = '2023-12-15'
+LOOKBACK = 21 * 6 # 21 days in a trading month
+
+
 # read example dataset into df 
-#data = data_loader.nasdaq_dotcom()
+data = data_loader.nasdaq_dotcom()
 
-
-
-
-# Importing data with yfinance
-#ticker = '^GSPC'
-#yfticker= yf.Ticker(ticker)
-#data = yfticker.history(start="2004-01-01", interval="1D")
-#data = data.assign(symbol=ticker)
-
-data = yf.download('^GSPC',start='2020-1-1',end='2023-1-27')
-
-#data['Date'] = data.index
-data.reset_index(level=0, inplace=True)
-
-#print(data)
-
-#data['Date']= str(data['Date'])
-print(data['Date'])
-
-#data['Date'].timestamp.dt.strftime('%Y-%m-%d')
-
-#data['Date'] = data['Date'](dt.strptime("%Y-%m-%d"))
-
-
-
-
-# LPPLS model stuff:
-#
+print(data)
 
 # convert time to ordinal
 time = [pd.Timestamp.toordinal(dt.strptime(t1, '%Y-%m-%d')) for t1 in data['Date']]
 
+print(data)
+
 # create list of observation data
-price = np.log(data['Close'].values)
+price = np.log(data['Adj Close'].values)
 
 # create observations array (expected format for LPPLS observations)
 observations = np.array([time, price])
@@ -61,10 +40,6 @@ tc, m, w, a, b, c, c1, c2, O, D = lppls_model.fit(MAX_SEARCHES)
 # visualize the fit
 lppls_model.plot_fit()
 
-# should give a plot like the following...
-# PLOT 1 LPPLS MODEL CURVE
-
-
 
 # compute the confidence indicator
 res = lppls_model.mp_compute_nested_fits(
@@ -79,4 +54,3 @@ res = lppls_model.mp_compute_nested_fits(
 
 lppls_model.plot_confidence_indicators(res)
 # should give a plot like the following...
-# PLOT 2 BUBBLE INDICATOR
