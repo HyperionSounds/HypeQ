@@ -40,17 +40,17 @@ def get_next_trading_days(mkt_data, selected_rows):
 if __name__ == "__main__":  
 
     START = '2022-01-01'
-    END = '2024-08-05'
+    END = '2025-05-25'
     #END = dt.datetime.now()
 
-    tickers = ['ES=F'] 
-    adj_close_list = []
+    tickers = ['SPY'] 
+    close_list = []
     for ticker in tickers:
         ticker_module = yf.Ticker(ticker)
         data = yf.download(ticker, start=START, end=END)
-        adj_close = data['Adj Close']
-        adj_close.rename(f'{ticker} Adj Close', inplace=True)
-        adj_close_list.append(adj_close)
+        close = data['Close']
+        #close.rename(f'{ticker} Close', inplace=True)
+        close_list.append(close)
 
     mkt_data = data
     print('mkt_data: ', mkt_data)
