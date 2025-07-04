@@ -45,7 +45,7 @@ def is_above_20ma(ticker, start_date, end_date):
 
 if __name__ == "__main__":
     start_date = '2020-01-01'
-    end_date = '2025-05-28'
+    end_date = '2025-06-28'
     #end_date = datetime.today().strftime('%Y-%m-%d')
 
     sp500_tickers = get_sp500_tickers()
