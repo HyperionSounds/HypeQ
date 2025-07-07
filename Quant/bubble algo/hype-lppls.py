@@ -9,10 +9,10 @@ import matplotlib.pyplot as plt
 
 # Define the start and end dates
 START = '2020-01-01'
-END = '2025-07-01'
+END = '2025-07-05'
 
 # Define the tickers
-TICKERS = ['ES=F','NQ=F','ZN=F','TSLA','AAPL','SOXX']
+TICKERS = ['ORCL','ES=F','NQ=F','ZN=F','TSLA','AAPL','SOXX']
 
 # Download the close prices for the tickers
 close_list = []
