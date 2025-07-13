@@ -4,7 +4,7 @@
 daily_return_rate = 1.01  # 1.7% daily growth (i.e., 1.017 multiplier)
 monthly_contribution = 0000  # Contribution every 30 days
 target_value = 4_000_000  # Final investment goal
-initial_balance = 2000 # Start from $0
+initial_balance = 10000 # Start from $0
 
 # Initialize variables
 balance = initial_balance
