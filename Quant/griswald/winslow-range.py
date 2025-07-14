@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 atrLength = 20
-RangeDays = 24
+RangeDays = 40
 mkt_open = 6270
 
 def get_next_trading_days(mkt_data, selected_rows):
@@ -85,7 +85,7 @@ if __name__ == "__main__":
                             (mkt_data['Volatility_nd'] - recent_vol) ** 2) ** 0.5
 
     # Find N most similar past periods (excluding the last row)
-    num_matches = 24
+    num_matches = 40
     matched_rows = mkt_data.iloc[:-n].nsmallest(num_matches, 'Distance')
 
     print(f"\n🔍 Matching on {n}-day range and volatility:")
