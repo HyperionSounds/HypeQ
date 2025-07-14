@@ -10,10 +10,10 @@ import seaborn as sns
 atrLength = 10
 
 #number of days to look for to compare to
-RangeDays = 10
+RangeDays = 30
 
 #where you want to use as center for density function
-mkt_open = 5480
+mkt_open = 6270
 
 def get_next_trading_days(mkt_data, selected_rows):
     # Create a function to find the next trading day (excluding weekends)
@@ -109,13 +109,14 @@ if __name__ == "__main__":
     # histogram and density plot with seaborn
     sns.histplot(predicted_range.values, bins=30, kde=True, color='skyblue', edgecolor='blue')
 
-    # Plot histogram
-    plt.figure(figsize=(10, 6))
-    plt.hist(predicted_range.values, bins=20, color='skyblue', edgecolor='black')
-    plt.title('Histogram of Predicted Ranges')
-    plt.xlabel('Predicted Ranges')
-    plt.ylabel('Frequency')
+        # Plot histogram
+    #plt.figure(figsize=(10, 6))
+    #plt.hist(predicted_range.values, bins=20, color='skyblue', edgecolor='black')
+    #plt.title('Histogram of Predicted Ranges')
+    #plt.xlabel('Predicted Ranges')
+    #plt.ylabel('Frequency')
 
-    pd.DataFrame(predicted_range.values).plot(kind='density')
+    #pd.DataFrame(predicted_range.values).plot(kind='density')
+
 
     plt.show()
