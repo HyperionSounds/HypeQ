@@ -9,7 +9,7 @@ import seaborn as sns
 
 atrLength = 20
 RangeDays = 24
-mkt_open = 5159.5
+mkt_open = 6270
 
 def get_next_trading_days(mkt_data, selected_rows):
     def next_trading_day_index(current_index):
