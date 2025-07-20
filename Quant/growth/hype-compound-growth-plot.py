@@ -5,9 +5,9 @@ from pandas.tseries.holiday import USFederalHolidayCalendar
 from pandas.tseries.offsets import CustomBusinessDay
 
 # Parameters
-daily_return_rate = 1.017  # 1.7% daily return
-monthly_contribution = 1000
-target_value = 4_000_000
+daily_return_rate = 1.01  # 1.7% daily return
+monthly_contribution = 2000
+target_value = 1_000_000
 start_date = date(2025, 1, 1)
 end_date = date(2050, 1, 1)
 contribution_interval = 30  # every 30 calendar days
@@ -17,7 +17,7 @@ us_bd = CustomBusinessDay(calendar=USFederalHolidayCalendar())
 business_days = pd.date_range(start=start_date, end=end_date, freq=us_bd)
 
 # Initialize simulation
-balance = 100000
+balance = 2000
 last_contribution_date = start_date
 balance_history = []
 date_history = []
@@ -47,7 +47,7 @@ print(f"Reached ${target_value:,.0f} in {total_market_days} market days (~{appro
 plt.figure(figsize=(12, 6))
 plt.plot(date_history, balance_history, label='Portfolio Value')
 plt.axhline(y=target_value, color='red', linestyle='--', label='Target ($4M)')
-plt.title('Investment Account Growth Over Time\n($2,000/month, 1.7% Market Day Returns)')
+plt.title(f'Investment Account Growth Over Time\n(${monthly_contribution:,}/month, {daily_return_rate:.2f}% Market Day Returns)')
 plt.xlabel('Date')
 plt.ylabel('Account Balance ($)')
 plt.grid(True)
