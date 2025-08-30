@@ -4,7 +4,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-start_date = '2020-01-01'
+start_date = '2024-01-01'
 
 # Ticker data import
 #Example for importing multiple tickers

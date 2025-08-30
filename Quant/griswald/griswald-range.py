@@ -17,7 +17,7 @@ END = dt.datetime.now()
 n = 5  # Number of recent days to compare
 RangeDays = 30  # Number of similar historical patterns to look for
 forward_days = 5  # How many days ahead to analyze
-mkt_open = 6270  # Starting point for prediction
+mkt_open = 6486  # Starting point for prediction
 
 def get_forward_returns(df, reference_indices, n_days):
     results = []

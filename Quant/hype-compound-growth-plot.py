@@ -1,4 +1,4 @@
-import matplotlib.pyplot as plt
+pip install selenium pandas numpyimport matplotlib.pyplot as plt
 import pandas as pd
 from datetime import date
 from pandas.tseries.holiday import USFederalHolidayCalendar
@@ -6,8 +6,8 @@ from pandas.tseries.offsets import CustomBusinessDay
 
 # Parameters
 daily_return_rate = 1.01  # 1.7% daily return
-monthly_contribution = 1000
-target_value = 4_000_000
+monthly_contribution = 2000
+target_value = 1_000_000
 start_date = date(2025, 1, 1)
 end_date = date(2050, 1, 1)
 contribution_interval = 30  # every 30 calendar days

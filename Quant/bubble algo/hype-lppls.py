@@ -9,15 +9,16 @@ import matplotlib.pyplot as plt
 
 # Define the start and end dates
 START = '2020-01-01'
-END = '2025-07-05'
+END = '2025-08-27'
 
 # Define the tickers
-TICKERS = ['ORCL','ES=F','NQ=F','ZN=F','TSLA','AAPL','SOXX']
+TICKERS = ['ES=F','NQ=F','ZN=F','SOXX','NVDA','AMD','TSLA','AAPL']
 
 # Download the close prices for the tickers
 close_list = []
 
 def analyze_ticker(ticker):
+    # yf.utils.cache_clear()
     data = yf.download(ticker, start=START, end=END)  # Ensure flat columns
     print(data)
     close = data['Close']
@@ -80,6 +81,7 @@ def analyze_ticker(ticker):
 def main():
     print('LPPLS analysis:')
     for ticker in TICKERS:
+        
         analyze_ticker(ticker)
     print("Analysis complete")
 

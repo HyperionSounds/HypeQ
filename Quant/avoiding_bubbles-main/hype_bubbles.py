@@ -11,7 +11,7 @@ if __name__ == "__main__":
 
 
     START = '2020-01-1'
-    END = '2023-12-15'
+    END = '2025-08-22'
     LOOKBACK = 21 * 6 # 21 days in a trading month
 
 

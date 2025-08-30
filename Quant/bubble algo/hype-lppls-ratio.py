@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 # Define the start and end dates
 START = '2020-01-01'
-END = '2025-06-03'
+END = '2025-08-27'
 
 # Define the tickers
 #TICKERS = ['ES=F','NQ=F','^HGX']

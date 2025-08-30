@@ -28,12 +28,12 @@ def get_next_trading_days(mkt_data, selected_rows):
 
 if __name__ == "__main__":  
     START = '2022-01-01'
-    END = '2025-07-14'
+    END = '2025-08-27'
     ticker = 'SPY'
     vix_ticker = '^VIX'
 
     # Rolling window
-    n = 3  # <--- change this to set how many past/future days to use
+    n = 2  # <--- change this to set how many past/future days to use
 
     # Download SPY data
     data = yf.download(ticker, start=START, end=END)

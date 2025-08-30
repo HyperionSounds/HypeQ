@@ -8,6 +8,8 @@ import certifi
 # -------------------------------
 # Get S&P 500 tickers from Wikipedia
 # -------------------------------
+
+
 def get_sp500_tickers():
     url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
     response = requests.get(url, verify=certifi.where())
@@ -20,6 +22,37 @@ def get_sp500_tickers():
         tickers.append(ticker)
 
     return tickers
+
+def get_sp500_tickers():
+    url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+
+    try:
+        # --- Try BeautifulSoup first ---
+        response = requests.get(url, verify=certifi.where(), timeout=10)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, 'html.parser')
+        table = soup.find('table', {'id': 'constituents'})
+
+        if table is None:
+            raise ValueError("S&P500 table not found with BeautifulSoup")
+
+        tickers = []
+        for row in table.find_all('tr')[1:]:
+            ticker = row.find_all('td')[0].text.strip().replace('.', '-')
+            tickers.append(ticker)
+
+        if tickers:  # return only if we got results
+            return tickers
+
+    except Exception as e:
+        print(f"[WARN] BeautifulSoup failed: {e}")
+        print("[INFO] Falling back to pandas.read_html...")
+
+    # --- Fallback: pandas.read_html ---
+    tables = pd.read_html(url)
+    df = tables[0]  # first table is the S&P 500 constituents
+    tickers = df['Symbol'].str.replace('.', '-', regex=False).tolist()
+    return tickers    
 
 # -------------------------------
 # CANSLIM Screener
